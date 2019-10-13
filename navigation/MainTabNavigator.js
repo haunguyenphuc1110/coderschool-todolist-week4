@@ -1,12 +1,12 @@
 import React from 'react';
-import { Platform } from 'react-native';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
+import COLORS from '../constants/Colors';
 
 import TabBarIcon from '../components/TabBarIcon';
 import TodoScreen from '../screens/TodoScreen/Todo.screen';
 import DetailsScreen from '../screens/DetailsScreen/Details.screen';
 import CompleteScreen from '../screens/CompleteScreen/Complete.screen';
-import ActiveScreen from '../screens/ActiveScreen/Active.Screen';
+import ActiveScreen from '../screens/ActiveScreen/Active.screen';
 
 const HomeStack = createStackNavigator(
   {
@@ -17,9 +17,8 @@ const HomeStack = createStackNavigator(
 
 HomeStack.navigationOptions = {
   tabBarLabel: 'Home',
-  tabBarIcon: ({ focused }) => (
+  tabBarIcon: () => (
     <TabBarIcon
-      focused={focused}
       name={'ios-list-box'}
     />
   ),
@@ -35,8 +34,8 @@ const CompleteStack = createStackNavigator(
 
 CompleteStack.navigationOptions = {
   tabBarLabel: 'Complete',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon focused={focused} name={'ios-done-all'} />
+  tabBarIcon: () => (
+    <TabBarIcon name={'ios-done-all'} />
   ),
 };
 
@@ -50,18 +49,27 @@ const ActiveStack = createStackNavigator(
 
 ActiveStack.navigationOptions = {
   tabBarLabel: 'Active',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon focused={focused} name={'ios-checkmark-circle'} />
+  tabBarIcon: () => (
+    <TabBarIcon name={'ios-checkmark-circle'} />
   ),
 };
 
 ActiveStack.path = '';
 
-const tabNavigator = createBottomTabNavigator({
-  HomeStack,
-  CompleteStack,
-  ActiveStack
-});
+const tabNavigator = createBottomTabNavigator(
+  {
+    HomeStack,
+    CompleteStack,
+    ActiveStack
+  },
+  {
+    tabBarOptions: {
+      style: {
+        backgroundColor: COLORS.BLACK
+      },
+    }
+  }
+);
 
 tabNavigator.path = '';
 
