@@ -3,20 +3,16 @@ import { Platform } from 'react-native';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 
 import TabBarIcon from '../components/TabBarIcon';
-import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
-import SettingsScreen from '../screens/SettingsScreen';
-
-const config = Platform.select({
-  web: { headerMode: 'screen' },
-  default: {},
-});
+import TodoScreen from '../screens/TodoScreen/Todo.screen';
+import DetailsScreen from '../screens/DetailsScreen/Details.screen';
+import CompleteScreen from '../screens/CompleteScreen/Complete.screen';
+import ActiveScreen from '../screens/ActiveScreen/Active.Screen';
 
 const HomeStack = createStackNavigator(
   {
-    Home: HomeScreen,
-  },
-  config
+    Todo: TodoScreen,
+    Details: DetailsScreen
+  }
 );
 
 HomeStack.navigationOptions = {
@@ -24,53 +20,47 @@ HomeStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={
-        Platform.OS === 'ios'
-          ? `ios-information-circle${focused ? '' : '-outline'}`
-          : 'md-information-circle'
-      }
+      name={'ios-list-box'}
     />
   ),
 };
 
 HomeStack.path = '';
 
-const LinksStack = createStackNavigator(
+const CompleteStack = createStackNavigator(
   {
-    Links: LinksScreen,
-  },
-  config
+    Complete: CompleteScreen
+  }
 );
 
-LinksStack.navigationOptions = {
-  tabBarLabel: 'Links',
+CompleteStack.navigationOptions = {
+  tabBarLabel: 'Complete',
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'} />
+    <TabBarIcon focused={focused} name={'ios-done-all'} />
   ),
 };
 
-LinksStack.path = '';
+CompleteStack.path = '';
 
-const SettingsStack = createStackNavigator(
+const ActiveStack = createStackNavigator(
   {
-    Settings: SettingsScreen,
-  },
-  config
+    Active: ActiveScreen,
+  }
 );
 
-SettingsStack.navigationOptions = {
-  tabBarLabel: 'Settings',
+ActiveStack.navigationOptions = {
+  tabBarLabel: 'Active',
   tabBarIcon: ({ focused }) => (
-    <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'} />
+    <TabBarIcon focused={focused} name={'ios-checkmark-circle'} />
   ),
 };
 
-SettingsStack.path = '';
+ActiveStack.path = '';
 
 const tabNavigator = createBottomTabNavigator({
   HomeStack,
-  LinksStack,
-  SettingsStack,
+  CompleteStack,
+  ActiveStack
 });
 
 tabNavigator.path = '';
