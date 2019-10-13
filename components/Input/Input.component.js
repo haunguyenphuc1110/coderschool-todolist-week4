@@ -14,7 +14,6 @@ const Input = ({ inputValue, onChangeText, onDoneAddItem }) => (
     underlineColorAndroid="transparent"
     selectionColor={'white'}
     maxLength={30}
-    autoFocus={true}
     returnKeyType="done"
     autoCorrect={false}
     blurOnSubmit={true}
