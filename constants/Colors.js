@@ -11,3 +11,4 @@ const COLORS = {
   DELETE_ICON_COLOR: '#bc2e4c'
 }
 
+export default COLORS;
