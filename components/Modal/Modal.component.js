@@ -30,7 +30,6 @@ const CustomModal = (props) => {
               inputStyle={styles.input}
               inputValue={inputValue}
               onChangeText={onChangeText}
-              selectionColor={COLORS.BLACK}
             />
           </View> 
           <View style={styles.buttonContainer}>
@@ -38,14 +37,14 @@ const CustomModal = (props) => {
               <TouchableOpacity
                 onPress={editItem}
                 style={styles.edit}>
-                <Text>Edit</Text>
+                <Text style={styles.label}>Edit</Text>
               </TouchableOpacity>
             </View>
             <View style={styles.button}>
               <TouchableOpacity
                 onPress={hideModal}
                 style={styles.cancel}>
-                <Text>Cancel</Text>
+                <Text style={styles.label}>Cancel</Text>
               </TouchableOpacity>
             </View>
           </View>  

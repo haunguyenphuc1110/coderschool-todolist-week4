@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   input: { 
+    color: COLORS.BLACK,
     width: 300, 
     fontSize: 16, 
     borderWidth: 1,
@@ -65,6 +66,9 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 10,
     elevation: 5
+  },
+  text: {
+    fontWeight: '500'
   }
 });
 export default styles;
