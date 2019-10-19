@@ -46,6 +46,14 @@ class CompleteScreen extends React.Component {
     }
   };
 
+  onNavigate = (text, createdAt, isCompleted) => {
+    this.props.navigation.navigate('Details', {
+      todo: text,
+      date: createdAt,
+      status: isCompleted ? 'Completed' : 'Active'
+    })
+  }
+
   render() {
     const { loadingItems, allItems } = this.state;
     return (
@@ -70,19 +78,19 @@ class CompleteScreen extends React.Component {
                       titleStyle={{alignItems: 'center'}}
                     />)
                 }
-              {loadingItems ? (
-                Object.values(allItems)
-                  .reverse()
-                  .map(item => (
-                    <List
-                      key={item.id}
-                      {...item}
-                      disabled={"true"}
-                    />
-                  ))
-              ) : (
-                <ActivityIndicator size="large" color="white" />
-              )}
+              {loadingItems 
+                ? (Object.values(allItems)
+                    .reverse()
+                    .map(item => (
+                      <List
+                        key={item.id}
+                        {...item}
+                        disabled={"true"}
+                        onOpenDetails={this.onNavigate}
+                      />
+                    ))) 
+                : (<ActivityIndicator size="large" color="white" />)
+              }
             </View>
           </ScrollView>
         </LinearGradient>

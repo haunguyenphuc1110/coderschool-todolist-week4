@@ -5,6 +5,8 @@ const COLORS = {
   COMPLETE_END: '#6dd5fa',
   ACTIVE_START: '#11998e',
   ACTIVE_END: '#38ef7d',
+  DETAIL_START: '#fc5c7d',
+  DETAIL_END: '#6a82fb',
   LIGHT_WHITE: '#fcefe9',
   INPUT_PLACEHOLDER: '#f1a895',
   LIGHTER_WHITE: '#f4e4e2',

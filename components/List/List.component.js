@@ -18,9 +18,18 @@ class List extends Component {
     }
   };
   render() {
-    const { text, deleteItem, id, isCompleted, showModalEdit, disabled } = this.props;
+    const { 
+      text,
+      deleteItem, 
+      id, 
+      isCompleted, 
+      showModalEdit, 
+      disabled, 
+      onOpenDetails,
+      createdAt
+    } = this.props;
     return (
-      <TouchableOpacity style={styles.container}>
+      <TouchableOpacity style={styles.container} onPress={() => onOpenDetails(text, createdAt, isCompleted)}>
         <View style={styles.column}>
           <CheckBox
             value={isCompleted}

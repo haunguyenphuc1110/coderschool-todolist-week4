@@ -7,7 +7,7 @@ export default createAppContainer(
   createStackNavigator(
     {
       Main: MainTabNavigator,
-      Detail: DetailsScreen
+      Details: DetailsScreen
     },
     {
       defaultNavigationOptions: {

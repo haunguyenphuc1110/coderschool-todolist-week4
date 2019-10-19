@@ -10,8 +10,7 @@ import ActiveScreen from '../screens/ActiveScreen/Active.screen';
 
 const HomeStack = createStackNavigator(
   {
-    Todo: TodoScreen,
-    Details: DetailsScreen
+    Todo: TodoScreen
   }
 );
 
@@ -58,8 +57,8 @@ ActiveStack.path = '';
 
 const tabNavigator = createBottomTabNavigator(
   {
-    ActiveStack,
     HomeStack,
+    ActiveStack,
     CompleteStack
   },
   {

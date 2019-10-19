@@ -82,6 +82,14 @@ class TodoScreen extends React.Component {
     }
   };
 
+  onNavigate = (text, createdAt, isCompleted) => {
+    this.props.navigation.navigate('Details', {
+      todo: text,
+      date: createdAt,
+      status: isCompleted ? 'Completed' : 'Active'
+    })
+  }
+
   onDoneAddItem = () => {
     const { inputValue } = this.state;
     if (inputValue !== '') {
@@ -92,7 +100,9 @@ class TodoScreen extends React.Component {
             id,
             isCompleted: false,
             text: inputValue,
-            createdAt: Date.now()
+            createdAt: (new Date()).toLocaleDateString('vn-VN', {
+              weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+            })
           }
         };
         const newState = {
@@ -224,22 +234,23 @@ class TodoScreen extends React.Component {
                     color={COLORS.LIGHTER_WHITE} 
                     deleteAllItems={this.deleteAllItems} />                 
                 </View>)}
-              {loadingItems ? (
-                Object.values(allItems)
-                  .reverse()
-                  .map(item => (
-                    <List
-                      key={item.id}
-                      {...item}
-                      deleteItem={this.deleteItem}
-                      completeItem={this.completeItem}
-                      incompleteItem={this.incompleteItem}
-                      showModalEdit={this.showModalEdit}
-                    />
-                  ))
-              ) : (
-                <ActivityIndicator size="large" color="white" />
-              )}
+              {loadingItems 
+                ? (Object.values(allItems)
+                    .reverse()
+                    .map(item => (
+                      <List
+                        key={item.id}
+                        {...item}
+                        deleteItem={this.deleteItem}
+                        completeItem={this.completeItem}
+                        incompleteItem={this.incompleteItem}
+                        showModalEdit={this.showModalEdit}
+                        onOpenDetails={this.onNavigate}
+                      />
+                    ))
+                  ) 
+                : (<ActivityIndicator size="large" color="white" />)
+              }
             </View>
             <CustomModal
               modalVisible={modalVisible}
