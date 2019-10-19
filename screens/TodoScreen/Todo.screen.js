@@ -82,13 +82,13 @@ class TodoScreen extends React.Component {
     }
   };
 
-  onNavigate = (text, createdAt, isCompleted) => {
+  onNavigate = (item) => {
     this.props.navigation.navigate('Details', {
-      todo: text,
-      date: createdAt,
-      status: isCompleted ? 'Completed' : 'Active'
+      todo: item.text,
+      date: item.createdAt,
+      status: item.isCompleted ? 'Completed' : 'Active'
     })
-  }
+  };
 
   onDoneAddItem = () => {
     const { inputValue } = this.state;
@@ -100,9 +100,7 @@ class TodoScreen extends React.Component {
             id,
             isCompleted: false,
             text: inputValue,
-            createdAt: (new Date()).toLocaleDateString('vn-VN', {
-              weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-            })
+            createdAt: Date.now()
           }
         };
         const newState = {
@@ -171,6 +169,7 @@ class TodoScreen extends React.Component {
         modalVisible: false
       })
     });
+    alert('Edit successfully!');
   };
 
   incompleteItem = id => {
@@ -240,7 +239,7 @@ class TodoScreen extends React.Component {
                     .map(item => (
                       <List
                         key={item.id}
-                        {...item}
+                        item={item}
                         deleteItem={this.deleteItem}
                         completeItem={this.completeItem}
                         incompleteItem={this.incompleteItem}

@@ -8,11 +8,15 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 30
   },
-  header: {
+  headerContainer: {
     marginHorizontal: 20,
     flexDirection: 'row',
     alignItems: 'center'
-  },  
+  }, 
+  header: { 
+    marginTop: 0, 
+    marginLeft: 60 
+  },
   centered: {
     flex: 1,
     justifyContent: 'center',

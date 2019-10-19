@@ -10,35 +10,33 @@ import COLORS from '../../constants/Colors';
 import styles from './List.styles';
 class List extends Component {
   onToggleCircle = () => {
-    const { isCompleted, id, completeItem, incompleteItem } = this.props;
-    if (isCompleted) {
-      incompleteItem(id);
+    const { item, completeItem, incompleteItem } = this.props;
+    if (item.isCompleted) {
+      incompleteItem(item.id);
     } else {
-      completeItem(id);
+      completeItem(item.id);
     }
   };
   render() {
     const { 
-      text,
+      item,
       deleteItem, 
       id, 
-      isCompleted, 
       showModalEdit, 
       disabled, 
       onOpenDetails,
-      createdAt
     } = this.props;
     return (
-      <TouchableOpacity style={styles.container} onPress={() => onOpenDetails(text, createdAt, isCompleted)}>
-        <View style={styles.column}>
+      <View style={styles.container}>
+        <TouchableOpacity style={styles.column} onPress={() => onOpenDetails(item)}>
           <CheckBox
-            value={isCompleted}
+            value={item.isCompleted}
             onChange={this.onToggleCircle}
             disabled={disabled}/>
           <Text
             style={[
               styles.text,
-              isCompleted
+              item.isCompleted
                 ? {
                     color: COLORS.ITEM_LIST_TEXT_STRIKE,
                     textDecorationLine: 'line-through'
@@ -46,19 +44,17 @@ class List extends Component {
                 : { color: COLORS.ITEM_LIST_TEXT }
             ]}
           >
-            {text}
+            {item.text}
           </Text>
-        </View>
+        </TouchableOpacity>
         {!disabled 
-          ? isCompleted 
+          ? item.isCompleted 
             ? (<View style={styles.button}>
                 <MaterialIcons
                   name="delete-forever"
                   size={24}
                   color={COLORS.DELETE_ICON_COLOR}
-                  onPress={() => {
-                    !disabled && deleteItem(id);
-                  }}
+                  onPress={() => deleteItem(item.id)}
                 />
               </View>) 
             : (<View style={styles.button}>
@@ -66,11 +62,11 @@ class List extends Component {
                   name="edit"
                   size={24}
                   color={COLORS.EDIT_ICON_COLOR}
-                  onPress={() => showModalEdit(id)}
+                  onPress={() => showModalEdit(item.id)}
                 />
               </View>)
           : <View/>}
-      </TouchableOpacity>
+      </View>
     );
   }
 }
