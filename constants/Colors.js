@@ -1,6 +1,10 @@
 const COLORS = {
   PRIMARY_START: '#f18a69',
   PRIMARY_END: '#d13e60',
+  COMPLETE_START: '#2980b9',
+  COMPLETE_END: '#6dd5fa',
+  ACTIVE_START: '#11998e',
+  ACTIVE_END: '#38ef7d',
   LIGHT_WHITE: '#fcefe9',
   INPUT_PLACEHOLDER: '#f1a895',
   LIGHTER_WHITE: '#f4e4e2',
@@ -9,8 +13,12 @@ const COLORS = {
   ITEM_LIST_TEXT: '#555555',
   ITEM_LIST_TEXT_STRIKE: '#c4c4cc',
   DELETE_ICON_COLOR: '#bc2e4c',
+  EDIT_ICON_COLOR: '#244c96',
   BLACK: 'black',
-  LIGHT_BLUE: '#edf1ff'
+  LIGHTER_BLUE: '#edf1ff',
+  LIGHT_BLUE: '#009999',
+  WHITE: 'white',
+  LIGHT_GRAY: '#686868'
 }
 
 export default COLORS;

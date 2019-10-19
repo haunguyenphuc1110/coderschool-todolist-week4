@@ -1,5 +1,5 @@
 import React from 'react';
-import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
+import { createStackNavigator, createBottomTabNavigator, withNavigationFocus } from 'react-navigation';
 import COLORS from '../constants/Colors';
 
 import TabBarIcon from '../components/TabBarIcon';
@@ -58,9 +58,9 @@ ActiveStack.path = '';
 
 const tabNavigator = createBottomTabNavigator(
   {
+    ActiveStack,
     HomeStack,
-    CompleteStack,
-    ActiveStack
+    CompleteStack
   },
   {
     tabBarOptions: {

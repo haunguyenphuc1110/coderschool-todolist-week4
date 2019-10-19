@@ -3,8 +3,11 @@ import {
   View,
   ActivityIndicator,
   ScrollView,
-  AsyncStorage 
+  AsyncStorage,
+  KeyboardAvoidingView
 } from 'react-native';
+import { withNavigationFocus } from 'react-navigation';
+
 import uuid from 'uuid/v1';
 import { LinearGradient } from 'expo-linear-gradient';
 import styles from './Todo.styles';
@@ -15,24 +18,57 @@ import Input from '../../components/Input/Input.component';
 import List from '../../components/List/List.component';
 import SubTitle from '../../components/SubTitle/SubTitle.component';
 import Button from '../../components/Button/Button.component';
+import CustomModal from '../../components/Modal/Modal.component';
 class TodoScreen extends React.Component {
 
   state = {
+    //Handle value in creating todo
     inputValue: '',
+
     loadingItems: false,
     allItems: {},
-    isCompleted: false
+    isCompleted: false,
+    modalVisible: false,
+
+    //Handle value in editing todo
+    editId: '',
+    editValue: ''
   };
 
   componentDidMount() {
     this.loadingItems();
   };
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.isFocused !== this.props.isFocused) {
+      this.loadingItems();
+    }
+  }
+
   newInputValue = value => {
     this.setState({
       inputValue: value
     });
   };
+
+  onEditValue = value => {
+    this.setState({
+      editValue: value
+    })
+  }
+
+  showModalEdit = (id) => {
+    this.setState({
+      modalVisible: true,
+      editId: id
+    });
+  };
+
+  hideModal = () => {
+    this.setState({
+      modalVisible: false
+    })
+  }
 
   loadingItems = async () => {
     try {
@@ -103,6 +139,30 @@ class TodoScreen extends React.Component {
     });
   };
 
+  editItem = () => {
+    const { editValue, editId } = this.state;
+    this.setState(prevState => {
+      const newState = {
+        ...prevState,
+        editValue: '',
+        editId: '',
+        allItems: {
+          ...prevState.allItems,
+          [editId]: {
+            ...prevState.allItems[editId],
+            text: editValue
+          }
+        }
+      };
+      this.saveItems(newState.allItems);
+      return { ...newState };
+    }, () => {
+      this.setState({
+        modalVisible: false
+      })
+    });
+  };
+
   incompleteItem = id => {
     this.setState(prevState => {
       const newState = {
@@ -119,6 +179,7 @@ class TodoScreen extends React.Component {
       return { ...newState };
     });
   };
+
   deleteAllItems = async () => {
     try {
       await AsyncStorage.removeItem('ToDos');
@@ -127,58 +188,68 @@ class TodoScreen extends React.Component {
       console.log(err);
     }
   };
+  
   saveItems = newItem => {
-    const saveItem = AsyncStorage.setItem('To Dos', JSON.stringify(newItem));
+    AsyncStorage.setItem('ToDos', JSON.stringify(newItem));
   };
 
   render() {
-    const { inputValue, loadingItems, allItems } = this.state;
+    const { inputValue, loadingItems, allItems, modalVisible, editValue } = this.state;
     return (
-      <View style={styles.container}>
+      <KeyboardAvoidingView style={styles.container} behavior="height" enabled>
         <LinearGradient
           colors={[COLORS.PRIMARY_START, COLORS.PRIMARY_END]}
           style={styles.container}>
-          <View style={styles.centered}>
-            <Header title={'Todo'} />
-          </View>
-          <View style={styles.inputContainer}>
-            <SubTitle subTitle={"What's Next?"} />
-            <Input 
-              inputValue={inputValue} 
-              onChangeText={this.newInputValue} 
-              onDoneAddItem={this.onDoneAddItem}/>
-          </View>
-          <View style={styles.list}>
-            { (Object.keys(allItems).length > 0) && (
-            <View style={styles.column}>
-              <SubTitle subTitle={'Recent Notes'} />
-              <View style={styles.deleteAllButton}>
-                <Button
-                  name={'delete-sweep'}
-                  color={COLORS.LIGHTER_WHITE} 
-                  deleteAllItems={this.deleteAllItems} />
-              </View>
-            </View>)}
-          {loadingItems ? (
-            <ScrollView contentContainerStyle={styles.scrollableList}>
-              {Object.values(allItems)
-                .reverse()
-                .map(item => (
-                  <List
-                    key={item.id}
-                    {...item}
-                    deleteItem={this.deleteItem}
-                    completeItem={this.completeItem}
-                    incompleteItem={this.incompleteItem}
-                  />
-                ))}
-            </ScrollView>
-          ) : (
-            <ActivityIndicator size="large" color="white" />
-          )}
-        </View>
+          <ScrollView contentContainerStyle={styles.scrollableList}>
+            <View style={styles.centered}>
+              <Header title={'Todo'} />
+            </View>
+            <View style={styles.inputContainer}>
+              <SubTitle subTitle={"What's Next?"} />
+              <Input 
+                inputValue={inputValue} 
+                onChangeText={this.newInputValue} 
+                onDoneAddItem={this.onDoneAddItem}
+                placeholder={"Type here to add note."}
+                selectionColor={COLORS.WHITE}
+                placeholderTextColor={COLORS.INPUT_PLACEHOLDER}
+              />
+            </View>
+            <View style={styles.list}>
+              {(Object.keys(allItems).length > 0) && (
+                <View style={styles.column}>
+                  <SubTitle subTitle={'Recent Notes'} />
+                  <Button
+                    name={'delete-sweep'}
+                    color={COLORS.LIGHTER_WHITE} 
+                    deleteAllItems={this.deleteAllItems} />                 
+                </View>)}
+              {loadingItems ? (
+                Object.values(allItems)
+                  .reverse()
+                  .map(item => (
+                    <List
+                      key={item.id}
+                      {...item}
+                      deleteItem={this.deleteItem}
+                      completeItem={this.completeItem}
+                      incompleteItem={this.incompleteItem}
+                      showModalEdit={this.showModalEdit}
+                    />
+                  ))
+              ) : (
+                <ActivityIndicator size="large" color="white" />
+              )}
+            </View>
+            <CustomModal
+              modalVisible={modalVisible}
+              hideModal={this.hideModal}
+              editItem={this.editItem}
+              inputValue={editValue} 
+              onChangeText={this.onEditValue} />
+          </ScrollView>
         </LinearGradient>
-      </View>
+      </KeyboardAvoidingView>
     );
   };
 }
@@ -187,4 +258,4 @@ TodoScreen.navigationOptions = {
   header: null
 };
 
-export default TodoScreen;
+export default withNavigationFocus(TodoScreen);

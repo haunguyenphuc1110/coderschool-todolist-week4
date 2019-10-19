@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import styles from './SubTitle.styles';
-const SubTitle = ({ subTitle }) => (
-  <View style={styles.subTitleContainer}>
-    <Text style={styles.subTitle}>{subTitle.toUpperCase()}</Text>
+const SubTitle = ({ subTitle, titleStyle, textStyle }) => (
+  <View style={[styles.subTitleContainer, titleStyle]}>
+    <Text style={[styles.subTitle, textStyle]}>{subTitle.toUpperCase()}</Text>
   </View>
 );
 

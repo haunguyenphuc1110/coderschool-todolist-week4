@@ -1,15 +1,16 @@
 import { StyleSheet, Platform, Dimensions } from 'react-native';
+import COLORS from '../../constants/Colors';
 const width = Dimensions.get('window').width;
 const styles = StyleSheet.create({
   container: {
-    width: width - 50,
+    width: width - 40,
     flexDirection: 'row',
     borderRadius: 5,
-    backgroundColor: 'white',
-    height: width / 8,
+    backgroundColor: COLORS.WHITE,
+    height: 50,
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginVertical: 5,
+    marginVertical: 10,
     ...Platform.select({
       ios: {
         shadowColor: 'rgb(50,50,50)',

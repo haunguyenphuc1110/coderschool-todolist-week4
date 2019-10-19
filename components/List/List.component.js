@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import {
   View,
   Text,
-  TouchableOpacity
+  TouchableOpacity,
+  CheckBox
 } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import COLORS from '../../constants/Colors';
@@ -17,20 +18,14 @@ class List extends Component {
     }
   };
   render() {
-    const { text, deleteItem, id, isCompleted } = this.props;
+    const { text, deleteItem, id, isCompleted, showModalEdit, disabled } = this.props;
     return (
-      <View style={styles.container}>
+      <TouchableOpacity style={styles.container}>
         <View style={styles.column}>
-          <TouchableOpacity onPress={this.onToggleCircle}>
-            <View
-              style={[
-                styles.circle,
-                isCompleted
-                  ? { borderColor: COLORS.CIRCLE_ACTIVE }
-                  : { borderColor: COLORS.CIRCLE_INACTIVE }
-              ]}
-            />
-          </TouchableOpacity>
+          <CheckBox
+            value={isCompleted}
+            onChange={this.onToggleCircle}
+            disabled={disabled}/>
           <Text
             style={[
               styles.text,
@@ -45,19 +40,32 @@ class List extends Component {
             {text}
           </Text>
         </View>
-        {isCompleted ? (
-          <View style={styles.button}>
-            <TouchableOpacity onPressOut={() => deleteItem(id)}>
-              <MaterialIcons
-                name="delete-forever"
-                size={24}
-                color={COLORS.DELETE_ICON_COLOR}
-              />
-            </TouchableOpacity>
-          </View>
-        ) : null}
-      </View>
+        {!disabled 
+          ? isCompleted 
+            ? (<View style={styles.button}>
+                <MaterialIcons
+                  name="delete-forever"
+                  size={24}
+                  color={COLORS.DELETE_ICON_COLOR}
+                  onPress={() => {
+                    !disabled && deleteItem(id);
+                  }}
+                />
+              </View>) 
+            : (<View style={styles.button}>
+                <MaterialIcons
+                  name="edit"
+                  size={24}
+                  color={COLORS.EDIT_ICON_COLOR}
+                  onPress={() => showModalEdit(id)}
+                />
+              </View>)
+          : <View/>}
+      </TouchableOpacity>
     );
   }
 }
+List.defaultProps = {
+  disabled: false
+};
 export default List;

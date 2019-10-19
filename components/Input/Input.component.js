@@ -2,17 +2,25 @@ import React from 'react';
 import { TextInput } from 'react-native';
 import COLORS from '../../constants/Colors';
 import styles from './Input.styles';
-const Input = ({ inputValue, onChangeText, onDoneAddItem }) => (
+const Input = ({ 
+  inputValue, 
+  onChangeText, 
+  onDoneAddItem, 
+  inputStyle,
+  placeholder,
+  selectionColor,
+  placeholderTextColor
+}) => (
   <TextInput
-    style={styles.input}
+    style={[styles.input, inputStyle]}
     value={inputValue}
     onChangeText={onChangeText}
-    placeholder="Type here to add note."
-    placeholderTextColor={COLORS.INPUT_PLACEHOLDER}
+    placeholder= {placeholder}
+    placeholderTextColor={placeholderTextColor}
     multiline={true}
     autoCapitalize="sentences"
     underlineColorAndroid="transparent"
-    selectionColor={'white'}
+    selectionColor={selectionColor}
     maxLength={30}
     returnKeyType="done"
     autoCorrect={false}
